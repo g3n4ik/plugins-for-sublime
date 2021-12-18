@@ -6,7 +6,6 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def get_prediction():
     context = request.form.get('context')
-    context = context + " Misha"
     return context
 
 if __name__ == '__main__':
