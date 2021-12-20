@@ -1,5 +1,5 @@
 import sublime, sublime_plugin
-from urllib import request
+from urllib import request, parse
 import os
 import urllib
 
@@ -18,13 +18,14 @@ class ExampleCommand(sublime_plugin.TextCommand):
         context = self.view.substr(sublime.Region(0, self.view.size()))
         if (len(context) == 0):
             return
-        adres = self.view.file_name()
-        data = {'context' : context, 'adres' : adres}
+        address = self.view.file_name()
+        data = {'context' : context, 'address' : address}
         data = parse.urlencode(data).encode()
         reg = request.Request("http://localhost:5342/", data=data)
         page = urllib.request.urlopen(reg)
         content = f(page.read().decode())
-        content = f(context)
+        if (len(content) == 0):
+            return
         self.view.show_popup(content, flags=sublime.HTML, location=-1, max_width=400, on_navigate=self.on_choice_symbol)
 
     def on_choice_symbol(self, symbol):
