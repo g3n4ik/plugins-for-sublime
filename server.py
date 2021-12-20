@@ -8,7 +8,6 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def get_prediction():
     context = request.form.get('context')
-    name = request.form.get('address').split('/')[-1]
 
     model = GPT2LMHeadModel.from_pretrained('C:/Users/1/gpt2-py-small/gpt2-py-small')
     model.eval()
@@ -17,7 +16,7 @@ def get_prediction():
     inputs = tokenizer.encode(context)
     inputs = torch.tensor(inputs)
 
-    generation_output = model.generate(inputs.unsqueeze(0), return_dict_in_generate=True, output_scores=True, top_k=3, num_beams=5, num_return_sequences=3)
+    generation_output = model.generate(inputs.unsqueeze(0), return_dict_in_generate=True, output_scores=True, top_k=3, num_beams=5, num_return_sequences=3, max_length = 5)
 
     predictions = ""
     decoded = tokenizer.decode(list(generation_output[0]))
