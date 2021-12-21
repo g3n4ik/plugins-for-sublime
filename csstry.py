@@ -4,7 +4,8 @@ import os
 import urllib
 
 def f(x):
-    ans = """<style>
+    ans = """<head>
+<style>
 a:link {
     color: white;
     background-color: #363636;
@@ -19,10 +20,12 @@ a:hover {
     background-color: #757575;
     text-decoration: underline;
 }
-</style>"""
+</style>
+</head><body>"""
     x = x.split('\n')
     for i in range(len(x)):
         ans = ans + "<div> <a href = '" + x[i] + "'" + ">" + x[i] + "</a> </div>"
+    ans += "</body>"
     return ans
 '''
 class NameCommand(sublime_plugin.WindowCommand):
