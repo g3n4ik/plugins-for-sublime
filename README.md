@@ -2,7 +2,7 @@
 
 ## Для  установки плагина нужно:
 
-- скачать в папку `.../AppData/Roaming/Sublime Text 3/Packages/User/` файл `demo.py` и туда же установить файл `Defaul.sublime-keymap`
+- скачать в папку `.../AppData/Roaming/Sublime Text 3/Packages/User/` файл `demo.py` и туда же установить файл `default.sublime-keymap`
 
 
 ## Для использования плагина нужно:
