@@ -46,7 +46,7 @@ def get_prediction():
     cnt_added = 0
 
     for idx in range(5):
-        predictions.append(decoded[idx][len(context)::].split('\n')[0].rstrip())
+        predictions.append(decoded[idx][len(context) + 1::].split('\n')[0].rstrip())
 
     print(f"Decoded predictions is {predictions}")
 
