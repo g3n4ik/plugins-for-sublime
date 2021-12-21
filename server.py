@@ -15,6 +15,8 @@ def get_prediction():
     name = request.form.get('address').split('\\')[-1]
     context = name + "₣" + context
 
+    print(f"Input context is {context}")
+
     model = GPT2LMHeadModel.from_pretrained("./gpt2-py-small")
     model.eval()
 
@@ -44,11 +46,9 @@ def get_prediction():
     cnt_added = 0
 
     for idx in range(5):
-        predictions.append(decoded[idx][len(context) + 1::].split('\n')[0].rstrip())
-        print(decoded[idx][len(context) + 1::])
-        print()
+        predictions.append(decoded[idx][len(context)::].split('\n')[0].rstrip())
 
-    print(predictions)
+    print(f"Decoded predictions is {predictions}")
 
     predictions = list(set(predictions))
 
@@ -57,14 +57,7 @@ def get_prediction():
         for pref_id in range(0, len(predictions)):
             if pref_id == idx:
                 continue
-            if len(predictions[idx]) > len(predictions[pref_id]):
-                continue
-            is_pref = True
-            for now_char in range(len(predictions[idx])):
-                if predictions[idx][now_char] != predictions[pref_id][now_char]:
-                    is_pref = False
-                    break
-            if is_pref:
+            if predictions[pref_id].startswith(predictions[idx]):
                 is_add = False
         if is_add and cnt_added < 3:
             cnt_added += 1
