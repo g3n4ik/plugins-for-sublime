@@ -1,4 +1,4 @@
-Smart code completion for Sublime Text
+# Smart code completion for Sublime Text
 
 ## Для  установки плагина нужно:
 
