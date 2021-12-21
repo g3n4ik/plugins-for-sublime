@@ -3,7 +3,7 @@
 ## Для  установки плагина нужно:
 - в командной строке перейти в папку `plugins-for-sublime/`
 - устновить зависимости `pip install -r requirements.txt`
-- скачать в папку `.../AppData/Roaming/Sublime Text 3/Packages/User/` файл `demo.py` и туда же установить файл `Defaul.sublime-keymap`
+- скачать в папку `.../AppData/Roaming/Sublime Text 3/Packages/User/` файл `cc_plugin.py` и туда же установить файл `Defaul.sublime-keymap`
 
 
 ## Для использования плагина нужно:
