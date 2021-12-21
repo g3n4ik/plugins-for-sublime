@@ -1,23 +1,32 @@
+import torch
+import youtokentome as yttm
+
 from flask import Flask, request
 from transformers import GPT2LMHeadModel
-import youtokentome as yttm
-import torch
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def get_prediction():
-    context = request.form.get('context')
-    name = request.form.get('address').split('/')[-1]
+    context = request.form.get("context")
+    name = request.form.get("address").split('/')[-1]
 
-    model = GPT2LMHeadModel.from_pretrained('C:/Users/1/gpt2-py-small/gpt2-py-small')
+    model = GPT2LMHeadModel.from_pretrained("./gpt2-py-small")
     model.eval()
 
-    tokenizer = yttm.BPE('C:/Users/1/gpt2-py-small/gpt2-py-small/gitbpe-py.bpe')
+    tokenizer = yttm.BPE("./gpt2-py-small/gitbpe-py.bpe")
     inputs = tokenizer.encode(context)
     inputs = torch.tensor(inputs)
 
-    generation_output = model.generate(inputs.unsqueeze(0), return_dict_in_generate=True, output_scores=True, top_k=3, num_beams=5, num_return_sequences=3)
+    generation_output = model.generate(
+        inputs.unsqueeze(0), 
+        return_dict_in_generate=True, 
+        output_scores=True, 
+        top_k=3, 
+        num_beams=5, 
+        num_return_sequences=5,
+        max_length=len(inputs) + 5,
+    )
 
     predictions = ""
     decoded = tokenizer.decode(list(generation_output[0]))
@@ -29,5 +38,6 @@ def get_prediction():
 
     return predictions
 
-if __name__ == '__main__':
-    app.run(host='localhost', port=5342)
+
+if __name__ == "__main__":
+    app.run(host="localhost", port=5342)
