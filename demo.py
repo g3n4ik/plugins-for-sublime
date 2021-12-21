@@ -10,10 +10,8 @@ def f(x):
         ans = ans + "<div> <a href = '" + x[i] + "'" + ">" + x[i] + "</a> </div>"
     ans += "</body>"
     return ans
-'''
-class NameCommand(sublime_plugin.WindowCommand):
-    def run(self, edit):
-        return window.view.file_name()'''
+
+
 class ExampleCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         for region in self.view.sel():
