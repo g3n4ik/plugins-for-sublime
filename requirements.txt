@@ -1,0 +1,5 @@
+Cython
+torch
+flask
+transformers
+git+https://github.com/JetBrains-Research/YouTokenToMe.git#egg=YouTokenToMe
