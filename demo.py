@@ -13,6 +13,7 @@ def f(x):
 
 
 class ExampleCommand(sublime_plugin.TextCommand):
+    content = ""
     def run(self, edit):
         for region in self.view.sel():
             context = self.view.substr(sublime.Region(0, region.begin()))
@@ -24,11 +25,11 @@ class ExampleCommand(sublime_plugin.TextCommand):
             reg = request.Request("http://localhost:5342/", data=data)
             page = urllib.request.urlopen(reg)
             content = f(page.read().decode())
-            if (len(content) == 0):
+            self.content = page.read().decode().split('\n')
+            if (len(self.content) == 0):
                 return
-            self.view.show_popup(content, flags=sublime.HTML, location=-1, max_width=400, on_navigate=self.on_choice_symbol)
+            self.view.show_popup_menu(self.content, on_select=self.on_choice_symbol)
 
     def on_choice_symbol(self, symbol):
-        self.view.run_command("insert", {"characters": symbol})
-        self.view.auto_complete_cycle()
+        self.view.run_command("insert", {"characters": self.content[symbol]})
         self.view.hide_popup()
