@@ -12,15 +12,36 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def get_prediction():
     context = request.form.get("context")
+
+    token_end = ""
+    token_suffix = ""
+
+    for pos in range(len(context) - 1, 0, -1):
+        if context[pos] == '\n':
+            break
+        token_suffix = context[pos] + token_suffix
+
+        print(f"Now token suffix {token_suffix}")
+
+        flag = False
+
+        for now_word in tokenizer.vocab():
+            if token_suffix in now_word and len(now_word) > 1:
+                print(now_word)
+                token_end = now_word[now_word.rfind(token_suffix) + len(token_suffix)::]
+                last_position = pos
+                flag = True
+
+        if not(flag):
+            break
+
+    context = context + token_end
+
     name = request.form.get('address').split('\\')[-1]
     context = name + "₣" + context
 
     print(f"Input context is {context}")
 
-    model = GPT2LMHeadModel.from_pretrained("./gpt2-py-small")
-    model.eval()
-
-    tokenizer = yttm.BPE("./gpt2-py-small/gitbpe-py.bpe")
     inputs = tokenizer.encode(context)
 
     if len(inputs) > 384:
@@ -46,7 +67,7 @@ def get_prediction():
     cnt_added = 0
 
     for idx in range(5):
-        predictions.append(decoded[idx][len(context) + 1::].split('\n')[0].rstrip())
+        predictions.append(token_end + decoded[idx][len(context) + 1::].split('\n')[0].rstrip())
 
     print(f"Decoded predictions is {predictions}")
 
@@ -69,4 +90,6 @@ def get_prediction():
 
 
 if __name__ == "__main__":
+    model = GPT2LMHeadModel.from_pretrained("./gpt2-py-small")
+    tokenizer = yttm.BPE("./gpt2-py-small/gitbpe-py.bpe")
     app.run(host="localhost", port=5342)
