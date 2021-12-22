@@ -13,6 +13,17 @@ app = Flask(__name__)
 def get_prediction():
     context = request.form.get("context")
 
+    context = context.lstrip('\n')
+
+    new_context = context[0]
+
+    for i in range(1, len(context)):
+        if new_context[-1] == '\n' and context[i] == '\n':
+            continue
+        new_context = new_context + context[i]
+
+    context = new_context
+
     token_end = ""
     token_suffix = ""
 
@@ -36,6 +47,8 @@ def get_prediction():
             break
 
     context = context + token_end
+
+    print(context)
 
     name = request.form.get('address').split('\\')[-1]
     context = name + "₣" + context
@@ -67,7 +80,7 @@ def get_prediction():
     cnt_added = 0
 
     for idx in range(5):
-        predictions.append(token_end + decoded[idx][len(context) + 1::].split('\n')[0].rstrip())
+        predictions.append(token_end + decoded[idx][len(context)::].lstrip('\n').split('\n')[0].rstrip())
 
     print(f"Decoded predictions is {predictions}")
 
