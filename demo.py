@@ -24,7 +24,6 @@ class ExampleCommand(sublime_plugin.TextCommand):
             data = parse.urlencode(data).encode()
             reg = request.Request("http://localhost:5342/", data=data)
             page = urllib.request.urlopen(reg)
-            content = f(page.read().decode())
             self.content = page.read().decode().split('\n')
             if (len(self.content) == 0):
                 return
