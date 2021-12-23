@@ -23,5 +23,8 @@ class ExampleCommand(sublime_plugin.TextCommand):
             self.view.show_popup_menu(self.content, on_select=self.on_choice_symbol)
 
     def on_choice_symbol(self, symbol):
+        if(symbol == -1):
+            self.view.hide_popup()
+            return
         self.view.run_command("insert", {"characters": self.content[symbol]})
         self.view.hide_popup()
