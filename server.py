@@ -27,18 +27,15 @@ def get_prediction():
     token_end = ""
     token_suffix = ""
 
-    for pos in range(len(context) - 1, 0, -1):
+    for pos in range(len(context) - 1, max(len(context) - 16, 0), -1):
         if context[pos] == '\n':
             break
         token_suffix = context[pos] + token_suffix
 
-        print(f"Now token suffix {token_suffix}")
-
         flag = False
 
         for now_word in tokenizer.vocab():
-            if token_suffix in now_word and len(now_word) > 1:
-                print(now_word)
+            if now_word.startswith(token_suffix) and len(now_word) > 1:
                 token_end = now_word[now_word.rfind(token_suffix) + len(token_suffix)::]
                 last_position = pos
                 flag = True
